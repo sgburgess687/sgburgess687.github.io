@@ -2708,7 +2708,7 @@ input, select, textarea {
 		text-align: center;
 		top: 0;
 		width: 23em;
-		right: 0;
+		left: 0;
 	}
 
 		#header h1, #header h2, #header h3, #header h4, #header h5, #header h6 {
@@ -2819,7 +2819,7 @@ input, select, textarea {
 
 	#wrapper {
 		background: #fff;
-		padding-right: 23em;
+		padding-left: 23em;
 	}
 
 /* Main */
