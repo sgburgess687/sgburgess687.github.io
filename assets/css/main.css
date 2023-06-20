@@ -2084,8 +2084,8 @@ input, select, textarea {
 				-ms-transition: opacity 0.2s ease-in-out;
 				transition: opacity 0.2s ease-in-out;
 				border-radius: 0.35em;
-				border: solid 3px rgba(255, 255, 255, 0.5);
-				color: #fff;
+				border: solid 3px #70cae6;
+				color: #ffffff;
 				content: 'View';
 				display: inline-block;
 				font-size: 0.8em;
