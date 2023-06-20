@@ -110,24 +110,24 @@ input, select, textarea {
 		-webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 		-ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 		transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		border-bottom: solid 1px #cf6766;
+		border-bottom: solid 1px #70cae6;
 		color: inherit;
 		text-decoration: none;
 	}
 
 		a:hover {
 			border-bottom-color: transparent;
-			color: #cf6766 !important;
+			color: #70cae6 !important;
 			text-decoration: none;
 		}
 
 	b {
-		color: #777;
+		color: #bbbbbb;
 		font-weight: 400;
 	}
 
 	strong {
-		color: #cf6766;
+		color: #70cae6;
 		font-weight: 400;
 	}
 
@@ -1814,7 +1814,7 @@ input, select, textarea {
 	}
 
 	label {
-		color: #777;
+		color: #bbbbbb;
 		display: block;
 		font-size: 0.9em;
 		font-weight: 400;
@@ -1868,7 +1868,7 @@ input, select, textarea {
 	}
 
 		select option {
-			color: #777;
+			color: #bbbbbb;
 			background: #f2ebe5;
 		}
 
@@ -2459,7 +2459,7 @@ input, select, textarea {
 		background-color: #031424;
 		border-radius: 0.35em;
 		border: 0;
-		color: #cf6766 !important;
+		color: #70cae6 !important;
 		cursor: pointer;
 		display: inline-block;
 		font-weight: 400;
@@ -2477,7 +2477,7 @@ input, select, textarea {
 		input[type="reset"]:hover,
 		input[type="button"]:hover,
 		.button:hover {
-			border-color: #cf6766;
+			border-color: #70cae6;
 			color: #fff !important;
 		}
 
@@ -2486,7 +2486,7 @@ input, select, textarea {
 		input[type="button"]:active,
 		.button:active {
 			background-color: rgba(73, 191, 157, 0.1);
-			border-color: #cf6766;
+			border-color: #70cae6;
 			color: #031424 !important;
 		}
 
@@ -2530,7 +2530,7 @@ input, select, textarea {
 		input[type="reset"].primary,
 		input[type="button"].primary,
 		.button.primary {
-			background-color: #cf6766;
+			background-color: #70cae6;
 			border-color: #031424;
 			color: #ffffff !important;
 		}
@@ -2539,7 +2539,7 @@ input, select, textarea {
 			input[type="reset"].primary:hover,
 			input[type="button"].primary:hover,
 			.button.primary:hover {
-				background-color: #cf6766;
+				background-color: #70cae6;
 				border-color: #031424;
 			}
 
@@ -2547,7 +2547,7 @@ input, select, textarea {
 			input[type="reset"].primary:active,
 			input[type="button"].primary:active,
 			.button.primary:active {
-				background-color: #cf6766;
+				background-color: #70cae6;
 				border-color: #031424;
 			}
 
@@ -2606,10 +2606,10 @@ input, select, textarea {
 		justify-content: space-between;
 		background-color: #1f1815;
 		background-attachment: scroll,								scroll;
-		background-image: url("images/overlay.png"), url("../../images/space_unsplash1.jpg");
+		background-image: url("images/overlay.png"), url("../../images/pipes.png");
 		background-position: top left,							top left;
-		background-repeat: repeat,								no-repeat;
-		background-size: auto,								150%;
+		background-repeat: repeat,								repeat;
+		background-size: auto,								300%;
 		color: rgba(255, 255, 255, 0.5);
 		height: 100%;
 		left: 0;
@@ -2637,7 +2637,7 @@ input, select, textarea {
 		}
 
 		#header strong, #header b {
-			color: #cf6766;
+			color: #70cae6;
 		}
 
 		#header h2, #header h3, #header h4, #header h5, #header h6 {
@@ -2645,7 +2645,7 @@ input, select, textarea {
 		}
 
 		#header h1 {
-			color: rgba(255, 255, 255, 0.65);
+			color: rgb(255, 255, 255);
 			font-size: 1.35em;
 			line-height: 1.75em;
 			margin: 0;
