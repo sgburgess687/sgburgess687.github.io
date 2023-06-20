@@ -83,7 +83,7 @@ input, select, textarea {
 	}
 
 	body {
-		background: #f2ebe5;
+		background: #eee5c3;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -2702,7 +2702,7 @@ input, select, textarea {
 	}
 
 		#main > section {
-			border-top: solid 2px #efefef;
+			border-top: solid 2px #30415d;
 			margin: 4em 0 0 0;
 			padding: 4em 0 0 0;
 		}
