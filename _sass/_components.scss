@@ -18,6 +18,7 @@
     transform var(--duration-fast) var(--ease-out);
 }
 .btn:active { transform: translateY(1px); }
+.btn svg { width: 1em; height: 1em; flex-shrink: 0; }
 
 .btn--primary {
   background: var(--color-accent);
@@ -138,6 +139,7 @@
   align-items: center;
   gap: var(--space-2);
 }
+.project-card__link svg { width: 1em; height: 1em; flex-shrink: 0; }
 
 .project-placeholder {
   border: 1px dashed var(--color-border);
