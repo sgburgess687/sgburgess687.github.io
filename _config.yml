@@ -1,0 +1,49 @@
+title: "Sean Burgess"
+tagline: "Quantitative Analyst — Maritime, Transportation & Logistics"
+description: >-
+  Quantitative analyst completing a Master of Maritime Business Administration & Logistics
+  at Texas A&M Galveston, with professional experience in corporate analytics, data engineering,
+  and marine business intelligence at Phillips 66.
+url: "https://sgburgess687.github.io"
+baseurl: ""
+
+author:
+  name: "Sean Burgess"
+  email: "sgburgess687@gmail.com"
+  linkedin: "https://www.linkedin.com/in/sgburgess687/"
+  github: "https://github.com/sgburgess687"
+
+social:
+  name: "Sean Burgess"
+  links:
+    - "https://www.linkedin.com/in/sgburgess687/"
+    - "https://github.com/sgburgess687"
+
+resume_file: "/assets/files/Sean_Burgess_Resume.pdf"
+
+collections:
+  projects:
+    output: true
+    permalink: /projects/:path/
+
+defaults:
+  - scope:
+      type: "projects"
+    values:
+      layout: "case-study"
+
+markdown: kramdown
+sass:
+  style: compressed
+  sass_dir: _sass
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - node_modules
+  - vendor

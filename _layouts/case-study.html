@@ -1,0 +1,36 @@
+---
+layout: default
+---
+<article>
+  <header class="section section--tight section--inverse">
+    <div class="container container--narrow">
+      <p class="eyebrow">{{ page.domain }}</p>
+      <h1>{{ page.title }}</h1>
+      {% if page.summary %}<p class="lede" style="max-width: 60ch;">{{ page.summary }}</p>{% endif %}
+
+      <dl class="case-study-meta" style="background: var(--ink-900);">
+        {% if page.role %}<div><dt>Role</dt><dd>{{ page.role }}</dd></div>{% endif %}
+        {% if page.timeframe %}<div><dt>Timeframe</dt><dd>{{ page.timeframe }}</dd></div>{% endif %}
+        {% if page.tools %}<div><dt>Tools</dt><dd>{{ page.tools | join: ", " }}</dd></div>{% endif %}
+        {% if page.data_sources %}<div><dt>Data</dt><dd>{{ page.data_sources }}</dd></div>{% endif %}
+      </dl>
+
+      <ul class="actions">
+        {% if page.github %}<li><a href="{{ page.github }}" class="btn btn--ghost" target="_blank" rel="noopener">View code</a></li>{% endif %}
+        {% if page.demo %}<li><a href="{{ page.demo }}" class="btn btn--primary" target="_blank" rel="noopener">Live demo</a></li>{% endif %}
+      </ul>
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="container container--narrow prose">
+      {{ content }}
+    </div>
+  </div>
+
+  <div class="section section--alt section--tight">
+    <div class="container container--narrow">
+      <a href="{{ '/projects/' | relative_url }}" class="btn btn--ghost">&larr; All projects</a>
+    </div>
+  </div>
+</article>

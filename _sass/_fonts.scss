@@ -1,0 +1,13 @@
+// Self-hosted variable font (Fraunces, SIL Open Font License).
+// Single file covers weights 300–600 via the variable "wght" axis —
+// no external font requests, no render-blocking third-party origin.
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 300 600;
+  font-display: swap;
+  src: url("/assets/fonts/fraunces-latin.woff2") format("woff2-variations"),
+       url("/assets/fonts/fraunces-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2122, U+2191, U+2193, U+2212, U+2215;
+}

@@ -1,0 +1,117 @@
+// =============================================================
+// DESIGN TOKENS
+//
+// Palette concept: dark ink/navy neutrals (a chart-plotter screen
+// at night) on a warm paper-neutral light mode, with a cool
+// "chart blue" accent for interactive elements and a warm
+// "signal amber" accent reserved for primary calls to action.
+// Accent colors are used only for links, buttons, hover states,
+// and section markers — never as decoration.
+// =============================================================
+
+:root {
+  // ---- Neutrals ------------------------------------------------
+  --ink-950: #0a1420;   // near-black navy — header/footer/dark sections
+  --ink-900: #101d2e;   // dark section bg
+  --ink-800: #17283c;   // dark section raised surface (cards on dark)
+  --ink-700: #24384f;   // dark section border/divider
+  --slate-600: #4b5c6e; // secondary text on light
+  --slate-400: #7c8ba0; // tertiary text / muted labels
+  --slate-200: #d3dae3; // borders on light
+  --fog-100: #eef1f5;   // alternate light section bg
+  --paper-50: #f8f9fb;  // primary light bg
+  --white: #ffffff;
+
+  // ---- Accents ---------------------------------------------------
+  --chart-blue-700: #114a63;  // link hover / pressed
+  --chart-blue-600: #1c6d8c;  // primary interactive (links, focus)
+  --chart-blue-400: #4f9ab8;  // interactive on dark bg
+  --signal-amber-600: #a6611f; // CTA hover
+  --signal-amber-500: #c4762f; // primary CTA fill
+
+  // ---- Data / chart accents (small, deliberate set) --------------
+  --data-teal: #2e9b8f;
+  --data-coral: #c1543d;
+  --data-sage: #7a9471;
+
+  // ---- Semantic aliases -------------------------------------------
+  --color-bg: var(--paper-50);
+  --color-bg-alt: var(--fog-100);
+  --color-bg-inverse: var(--ink-950);
+  --color-surface: var(--white);
+  --color-surface-inverse: var(--ink-800);
+  --color-text: var(--ink-950);
+  --color-text-muted: var(--slate-600);
+  --color-text-subtle: var(--slate-400);
+  --color-text-inverse: var(--paper-50);
+  --color-text-inverse-muted: var(--slate-200);
+  --color-border: var(--slate-200);
+  --color-border-inverse: var(--ink-700);
+  --color-link: var(--chart-blue-600);
+  --color-link-hover: var(--chart-blue-700);
+  --color-link-inverse: var(--chart-blue-400);
+  --color-accent: var(--signal-amber-500);
+  --color-accent-hover: var(--signal-amber-600);
+  --color-focus: var(--chart-blue-600);
+
+  // ---- Typography --------------------------------------------------
+  // Display/headings: self-hosted variable serif (distinct, editorial,
+  // chart-title character). Body/UI: native system stack — instant
+  // load, excellent legibility at small sizes, zero network cost.
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Code", "Consolas",
+    monospace;
+
+  --fs-900: clamp(2.75rem, 2.1rem + 2.6vw, 4.5rem);   // hero H1
+  --fs-800: clamp(2.1rem, 1.75rem + 1.5vw, 3rem);     // page H1
+  --fs-700: clamp(1.6rem, 1.4rem + 0.8vw, 2.1rem);    // H2
+  --fs-600: clamp(1.3rem, 1.2rem + 0.4vw, 1.55rem);   // H3
+  --fs-500: 1.2rem;    // lede / intro paragraph
+  --fs-400: 1rem;      // body
+  --fs-300: 0.9rem;    // small / meta
+  --fs-200: 0.78rem;   // eyebrow / micro-label
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.35;
+  --lh-normal: 1.6;
+
+  // ---- Spacing (8px scale) -----------------------------------------
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  // ---- Layout --------------------------------------------------------
+  --content-width: 72rem;
+  --content-width-narrow: 46rem;
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --border-width: 1px;
+
+  // ---- Motion ----------------------------------------------------------
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 600ms;
+}
+
+// ---- Breakpoints (used via Sass mixins, not custom properties) --------
+$bp-sm: 600px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+@mixin bp($size) {
+  @if $size == sm { @media (min-width: $bp-sm) { @content; } }
+  @if $size == md { @media (min-width: $bp-md) { @content; } }
+  @if $size == lg { @media (min-width: $bp-lg) { @content; } }
+  @if $size == xl { @media (min-width: $bp-xl) { @content; } }
+}

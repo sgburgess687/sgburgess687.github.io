@@ -1,0 +1,112 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-400);
+  line-height: var(--lh-normal);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, video { max-width: 100%; display: block; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: var(--lh-tight);
+  font-weight: 500;
+  margin: 0 0 var(--space-4);
+  color: inherit;
+}
+
+h1 { font-size: var(--fs-800); }
+h2 { font-size: var(--fs-700); }
+h3 { font-size: var(--fs-600); }
+h4 { font-size: var(--fs-400); font-weight: 600; }
+
+p { margin: 0 0 var(--space-4); }
+p:last-child { margin-bottom: 0; }
+
+a {
+  color: var(--color-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+a:hover { color: var(--color-link-hover); }
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+ul, ol { padding-left: 1.2em; }
+
+::selection {
+  background: var(--chart-blue-600);
+  color: var(--white);
+}
+
+// ---- Eyebrow / micro-label -------------------------------------------
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-200);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-link);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.4em;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.lede {
+  font-size: var(--fs-500);
+  color: var(--color-text-muted);
+  max-width: 46ch;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  background: var(--ink-950);
+  color: var(--paper-50);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  transition: top var(--duration-fast) var(--ease-out);
+}
+.skip-link:focus { top: var(--space-4); }

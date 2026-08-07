@@ -1,0 +1,169 @@
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+
+  @include bp(md) { padding-inline: var(--space-7); }
+}
+
+.container--narrow { max-width: var(--content-width-narrow); }
+
+.section {
+  padding-block: var(--space-9);
+}
+.section--tight { padding-block: var(--space-7); }
+.section--alt { background: var(--color-bg-alt); }
+.section--inverse {
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+
+  a:not(.btn) { color: var(--color-link-inverse); }
+  .eyebrow { color: var(--color-link-inverse); }
+  .lede { color: var(--color-text-inverse-muted); }
+}
+
+// ---- Site header / nav --------------------------------------------------
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 20, 32, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: var(--border-width) solid var(--color-border-inverse);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-4);
+}
+
+.site-brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--paper-50);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+.site-brand:hover { color: var(--chart-blue-400); }
+.site-brand span { color: var(--chart-blue-400); }
+
+.nav-toggle {
+  display: inline-flex;
+  background: none;
+  border: 0;
+  color: var(--paper-50);
+  padding: var(--space-2);
+  cursor: pointer;
+
+  @include bp(md) { display: none; }
+}
+.nav-toggle svg { width: 24px; height: 24px; }
+
+.site-nav {
+  display: none;
+  gap: var(--space-6);
+
+  @include bp(md) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.site-nav a {
+  color: var(--slate-200);
+  text-decoration: none;
+  font-size: var(--fs-300);
+  letter-spacing: 0.02em;
+  padding: var(--space-2) 0;
+  border-bottom: 2px solid transparent;
+  transition: color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  color: var(--white);
+  border-bottom-color: var(--chart-blue-400);
+}
+
+.site-nav .btn { color: var(--white); }
+
+// Mobile nav drawer
+.site-header.is-open .site-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  position: absolute;
+  inset: 100% 0 auto 0;
+  background: var(--ink-950);
+  border-bottom: var(--border-width) solid var(--color-border-inverse);
+  padding: var(--space-4) var(--space-5) var(--space-6);
+}
+.site-header.is-open .site-nav a {
+  width: 100%;
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width) solid var(--ink-800);
+}
+
+// ---- Footer ---------------------------------------------------------------
+.site-footer {
+  background: var(--color-bg-inverse);
+  color: var(--slate-200);
+  padding-block: var(--space-8) var(--space-6);
+}
+
+.site-footer__grid {
+  display: grid;
+  gap: var(--space-6);
+  margin-bottom: var(--space-7);
+
+  @include bp(md) {
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: var(--space-8);
+  }
+}
+
+.site-footer h3 {
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-200);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.site-footer ul { list-style: none; padding: 0; margin: 0; }
+.site-footer li { margin-bottom: var(--space-2); }
+.site-footer a { color: var(--slate-200); text-decoration: none; }
+.site-footer a:hover { color: var(--white); }
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+  border-top: var(--border-width) solid var(--ink-800);
+  padding-top: var(--space-5);
+  font-size: var(--fs-300);
+  color: var(--slate-400);
+}
+
+// ---- Grid helpers -----------------------------------------------------------
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+.grid--2 { @include bp(md) { grid-template-columns: repeat(2, 1fr); } }
+.grid--3 { @include bp(md) { grid-template-columns: repeat(3, 1fr); } }
+
+.two-col {
+  display: grid;
+  gap: var(--space-7);
+  align-items: start;
+
+  @include bp(lg) { grid-template-columns: 0.85fr 1.15fr; }
+}

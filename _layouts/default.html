@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+{% include head.html %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include icons.html %}
+  {% include header.html %}
+  <main id="main">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+</body>
+</html>

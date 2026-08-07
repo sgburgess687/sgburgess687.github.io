@@ -1,0 +1,58 @@
+.hero {
+  padding-block: var(--space-10) var(--space-9);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__chart {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.hero__eyebrow { margin-bottom: var(--space-5); }
+
+.hero h1 {
+  font-size: var(--fs-900);
+  max-width: 18ch;
+  margin-bottom: var(--space-5);
+}
+
+.hero__lede {
+  font-size: var(--fs-500);
+  color: var(--slate-200);
+  max-width: 52ch;
+  margin-bottom: var(--space-6);
+}
+
+// ---- Scroll reveal (progressive enhancement; content visible without JS) --
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+.no-js [data-reveal] { opacity: 1; transform: none; }
+
+.text-center { text-align: center; }
+.mt-0 { margin-top: 0 !important; }
+
+.section-header {
+  max-width: var(--content-width-narrow);
+  margin-bottom: var(--space-8);
+}
+
+.divider {
+  border: 0;
+  border-top: var(--border-width) solid var(--color-border);
+  margin: var(--space-8) 0;
+}
+.section--inverse .divider { border-top-color: var(--ink-700); }

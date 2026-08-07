@@ -1,0 +1,21 @@
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="{{ '/' | relative_url }}" class="site-brand">Sean<span>.</span>Burgess</a>
+
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
+      <svg><use href="#icon-menu"></use></svg>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      {% assign path = page.url | relative_url %}
+      <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a>
+      <a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about/' %}aria-current="page"{% endif %}>About</a>
+      <a href="{{ '/experience/' | relative_url }}" {% if page.url contains '/experience/' %}aria-current="page"{% endif %}>Experience</a>
+      <a href="{{ '/projects/' | relative_url }}" {% if page.url contains '/projects/' %}aria-current="page"{% endif %}>Projects</a>
+      <a href="{{ '/contact/' | relative_url }}" {% if page.url contains '/contact/' %}aria-current="page"{% endif %}>Contact</a>
+      <a href="{{ site.resume_file | relative_url }}" class="btn btn--ghost" target="_blank" rel="noopener">
+        Resume <svg><use href="#icon-doc"></use></svg>
+      </a>
+    </nav>
+  </div>
+</header>
