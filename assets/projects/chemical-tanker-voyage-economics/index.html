@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chemical Tanker Voyage Economics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --surface-0:#ffffff; --surface-1:#fcfcfb; --surface-2:#f4f4f2; --line:#e3e3df;
+  --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#7a7975; --navy:#1f3a5f;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --neg:#e34948;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-1);color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 80px}
+header{background:var(--navy);color:#fff;padding:44px 0 36px;margin-bottom:28px}
+header .wrap{padding-bottom:0}
+h1{font-size:30px;line-height:1.2;margin:0 0 6px;font-weight:650}
+header p.sub{margin:0;color:#c9d6e6;font-size:16px}
+header p.by{margin:14px 0 0;color:#9fb4cd;font-size:13px}
+h2{font-size:21px;margin:44px 0 6px;color:var(--navy);font-weight:650}
+h3{font-size:15px;margin:26px 0 6px;color:var(--ink);font-weight:650}
+p,li{color:var(--ink-2)}
+.lede{font-size:17px;color:var(--ink)}
+.disclaimer{background:#fdf3f1;border:1px solid #f3cdc4;border-left:4px solid var(--s2);
+  padding:12px 16px;border-radius:6px;font-size:13.5px;color:#6b3a2c;margin:18px 0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:22px 0}
+.kpi{background:var(--surface-0);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.kpi .v{font-size:24px;font-weight:650;color:var(--navy);letter-spacing:-.4px}
+.kpi .k{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em;margin-top:4px}
+.card{background:var(--surface-0);border:1px solid var(--line);border-radius:8px;padding:18px 18px 10px;margin:18px 0}
+.card h4{margin:0 0 2px;font-size:15px;font-weight:650}
+.card .note{margin:0 0 12px;font-size:13px;color:var(--ink-3)}
+.chart{position:relative;height:320px}
+.chart.tall{height:400px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0 4px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+thead th{background:var(--surface-2);color:var(--ink);font-weight:650;font-size:12.5px;
+  text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid var(--line)}
+tbody tr:hover{background:var(--surface-1)}
+td.num{font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.tag{display:inline-block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+  background:var(--surface-2);color:var(--ink-3);border-radius:4px;padding:2px 7px;margin-left:6px}
+.assume{font-size:13.5px}
+.assume td:last-child{color:var(--ink-3)}
+.assume td:not(:first-child){text-align:left}
+footer{border-top:1px solid var(--line);margin-top:56px;padding-top:18px;font-size:13px;color:var(--ink-3)}
+a{color:var(--s1)}
+ul{padding-left:20px}
+.hm td{text-align:center;font-variant-numeric:tabular-nums;border:2px solid var(--surface-0)}
+.dl a{display:inline-block;margin:6px 10px 6px 0;padding:9px 14px;border:1px solid var(--line);
+  border-radius:6px;background:var(--surface-0);text-decoration:none;color:var(--navy);font-size:14px;font-weight:600}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>Chemical Tanker Voyage Economics</h1>
+  <p class="sub">A round-voyage TCE model for a 38,000 dwt IMO II parcel tanker — cost build-up, sensitivity, and break-even freight</p>
+  <p class="by">Sean Burgess · September 2026 · Houston, TX</p>
+</div></header>
+<div class="wrap">
+
+<p class="lede">This is a working voyage-estimation model, the kind a chartering desk runs before fixing a
+cargo. It converts a voyage charter into a time-charter-equivalent (TCE) day rate, breaks the cost stack
+apart, and then asks the question that matters commercially: <strong>of everything that moves a voyage
+result, which levers actually matter, and which of those can an operator control?</strong></p>
+
+<div class="disclaimer"><strong>Independent analysis using publicly available data. Not affiliated with or
+endorsed by any organization named.</strong><br>
+Canal tolls are taken from published tariff schedules and the Brent and freight-index series are public
+data. <strong>Freight rates, port costs, port days, vessel particulars and the crude-to-bunker conversion
+are analyst assumptions, not observed market data</strong> — every one of them is stated explicitly below and
+is an editable input in the Excel model. The conclusions are about the <em>structure</em> of voyage
+economics, which is robust to the exact level of these inputs; the dollar figures are illustrative.</div>
+
+<h2>Headline result — base case</h2>
+<p>Base case: US Gulf → ARA round voyage, 85% fronthaul / 50% backhaul utilization, Brent at the
+trailing-12-month average of $82.01/bbl, normal port time.</p>
+<div class="kpis">
+  <div class="kpi"><div class="v">$23,574</div><div class="k">TCE per day</div></div>
+  <div class="kpi"><div class="v">49.4</div><div class="k">Round-voyage days</div></div>
+  <div class="kpi"><div class="v">$2.28m</div><div class="k">Gross freight</div></div>
+  <div class="kpi"><div class="v">$1.05m</div><div class="k">Voyage costs</div></div>
+  <div class="kpi"><div class="v">$42.77</div><div class="k">Break-even rate ($/t)</div></div>
+</div>
+
+<h3>What the model says</h3>
+<ul>
+<li><strong>Commercial decisions dominate, not fuel.</strong> Across plausible ranges, freight rate and
+cargo utilization swing TCE by $15,266 and $13,259 per day respectively, while a P10-to-P90 move in Brent
+($68 to $105) swings it by $5,934. Bunkers are the largest single cost line
+(62% of voyage costs) but only the fifth-ranked driver of the result, because freight rates and
+cargo intake move by more, in percentage terms, than the oil price does.</li>
+<li><strong>Filling the ship is the lever an operator actually owns.</strong> A 10% improvement in
+fronthaul utilization is worth $3,130/day — roughly 2.4× the effect of a 10% move in
+bunker price, and unlike the oil price it is inside the commercial team's control. On a parcel tanker this
+is the whole commercial game: finding the part cargo that fills the last four tanks.</li>
+<li><strong>Port time is the hidden cost line.</strong> This voyage spends 34% of its days in
+port, not at sea. Moving from normal to severe congestion (2× port days) costs $9,200/day of TCE —
+more than the entire plausible range of bunker prices. Almost all of that is the denominator: the same
+freight earned over more days, plus some extra MGO burn at berth. Time is the cost.</li>
+<li><strong>Speed is a trade-off that moves with the oil price.</strong> In this model the
+TCE-maximizing speed falls from 12.5 knots at $65 Brent to 11.5 knots at the base price
+and 10.0 knots at $104 — bunkers rise with the cube of speed while days fall only in
+proportion. Two caveats: the cube law flatters deep slow steaming, and engine-load limits, charterparty
+speed warranties and laycan windows bind in practice. The finding that survives both is directional — the
+optimum is a function of the bunker price, so it belongs in the fixture calculation rather than in a
+standing speed policy.</li>
+</ul>
+
+<h2>The voyage and the cost stack</h2>
+<div class="grid2">
+  <div class="card"><h4>Voyage cost build-up by route</h4>
+    <p class="note">Same vessel, same levers, four trade routes.</p>
+    <div class="chart"><canvas id="costs"></canvas></div></div>
+  <div class="card"><h4>TCE vs. daily vessel cost benchmark</h4>
+    <p class="note">Benchmark $18,000/day (OPEX plus capital recovery, or T/C-in hire).</p>
+    <div class="chart"><canvas id="tce"></canvas></div></div>
+</div>
+
+<table>
+<thead><tr><th>Route</th><th>Days</th><th>Gross freight</th><th>Bunkers</th><th>Port</th><th>Canal</th>
+<th>EU ETS</th><th>TCE $/day</th><th>Break-even $/t</th></tr></thead>
+<tbody><tr><td>USG-ARA transatlantic</td><td class='num'>49.4</td><td class='num'>$2,275,200</td><td class='num'>$652,340</td><td class='num'>$252,304</td><td class='num'>$0</td><td class='num'>$123,936</td><td class='num'><strong>$23,574</strong></td><td class='num'>$42.77</td></tr><tr><td>USG-Far East via Panama</td><td class='num'>82.5</td><td class='num'>$3,751,200</td><td class='num'>$1,167,607</td><td class='num'>$260,742</td><td class='num'>$426,920</td><td class='num'>$0</td><td class='num'><strong>$21,529</strong></td><td class='num'>$82.24</td></tr><tr><td>ARA-India WC via Suez</td><td class='num'>58.2</td><td class='num'>$3,285,000</td><td class='num'>$795,786</td><td class='num'>$231,562</td><td class='num'>$752,016</td><td class='num'>$154,150</td><td class='num'><strong>$21,396</strong></td><td class='num'>$68.38</td></tr><tr><td>ARA-India WC via Cape</td><td class='num'>85.3</td><td class='num'>$3,285,000</td><td class='num'>$1,283,528</td><td class='num'>$231,562</td><td class='num'>$0</td><td class='num'>$255,307</td><td class='num'><strong>$16,496</strong></td><td class='num'>$79.30</td></tr></tbody>
+</table>
+<p style="font-size:13px;color:var(--ink-3)">Port cost on the two Atlantic legs is built from the published
+tariffs rather than a lump sum: Port Houston charges a fixed harbour fee plus dockage per foot of LOA per
+day on a taper, so congestion raises the cash cost as well as the time cost, while Rotterdam charges per GT
+plus per tonne of cargo — capped — so a fuller ship pays more in dues but far more in freight. The Suez route carries a war-risk additional premium set at
+0.25% of hull value per transit, an illustrative figure; set it to zero in the model and the Suez routing
+gains $3,009/day of TCE, widening its advantage over the Cape alternative to $7,910/day. That single input — not distance — is what has
+decided Suez-versus-Cape routing decisions since 2023.</p>
+
+<h2>What drives the result</h2>
+<div class="card"><h4>Tornado — change in TCE across a plausible range for each input</h4>
+  <p class="note">Freight and bunker ranges are data-derived (BLS PPI year-on-year P10/P90; Brent 5-year
+  P10/P90). Port time, utilization, speed and port-cost ranges are judgment bands, stated in the model.</p>
+  <div class="chart tall"><canvas id="tornado"></canvas></div></div>
+
+<table><thead><tr><th>Input</th><th>Low</th><th>High</th><th>TCE at low</th><th>TCE at high</th>
+<th>Swing $/day</th></tr></thead><tbody><tr><td>Freight rate (market)</td><td class='num'>0.91×</td><td class='num'>1.25×</td><td class='num'>$19,533</td><td class='num'>$34,799</td><td class='num'><strong>$15,266</strong></td></tr><tr><td>Backhaul utilization</td><td class='num'>25%</td><td class='num'>75%</td><td class='num'>$16,945</td><td class='num'>$30,204</td><td class='num'><strong>$13,259</strong></td></tr><tr><td>Port time (congestion)</td><td class='num'>0.75×</td><td class='num'>1.75×</td><td class='num'>$26,505</td><td class='num'>$17,305</td><td class='num'><strong>$9,200</strong></td></tr><tr><td>Fronthaul utilization</td><td class='num'>70%</td><td class='num'>95%</td><td class='num'>$18,105</td><td class='num'>$27,259</td><td class='num'><strong>$9,154</strong></td></tr><tr><td>Bunker price (Brent)</td><td class='num'>$67.98</td><td class='num'>$104.84</td><td class='num'>$25,833</td><td class='num'>$19,899</td><td class='num'><strong>$5,934</strong></td></tr><tr><td>Port disbursements</td><td class='num'>0.75×</td><td class='num'>1.25×</td><td class='num'>$24,851</td><td class='num'>$22,298</td><td class='num'><strong>$2,553</strong></td></tr><tr><td>Service speed</td><td class='num'>12.0 kn</td><td class='num'>14.5 kn</td><td class='num'>$24,473</td><td class='num'>$22,463</td><td class='num'><strong>$2,010</strong></td></tr><tr><td>EU carbon price (EUA)</td><td class='num'>€50</td><td class='num'>€110</td><td class='num'>$24,410</td><td class='num'>$22,404</td><td class='num'><strong>$2,007</strong></td></tr></tbody></table>
+
+<div class="card"><h4>Leverage — TCE change for a +10% move in each input</h4>
+  <p class="note">The tornado answers "what moved results most over realistic ranges". This answers
+  "where does one unit of effort buy the most TCE" — the ranges differ, so both views are needed.</p>
+  <div class="chart"><canvas id="elas"></canvas></div></div>
+
+<h2>Break-even freight rates</h2>
+<p>The break-even fronthaul rate is the $/t at which the voyage earns exactly the daily vessel-cost
+benchmark. It is linear in the bunker price, so the slope of each line is the bunker exposure of the trade,
+and the gap between lines is the cost of congestion or of sailing part-empty.</p>
+<div class="grid2">
+  <div class="card"><h4>By port time</h4><p class="note">USG–ARA, base utilization.</p>
+    <div class="chart"><canvas id="bePort"></canvas></div></div>
+  <div class="card"><h4>By fronthaul utilization</h4><p class="note">USG–ARA, normal port time.</p>
+    <div class="chart"><canvas id="beUtil"></canvas></div></div>
+</div>
+<p>Two readings matter commercially. First, congestion is a rate problem: at severe congestion the
+US Gulf–ARA voyage needs $56.35/t instead of $42.23/t at the base bunker price — a
+33% uplift the market will not automatically pay. Second, the utilization curves are further
+apart than the port-time curves, which is the same message as the tornado: cargo intake, not fuel, is what
+decides whether the voyage clears its cost of capital.</p>
+
+<div class="card"><h4>TCE ($/day) by freight level and bunker price</h4>
+  <p class="note">USG–ARA. Shaded against the $18,000/day benchmark: values at or below it are voyages
+  that do not cover the vessel.</p>
+  <table class="hm"><thead><tr><th>Freight level</th><th>Brent $60</th><th>Brent $70</th><th>Brent $80</th><th>Brent $90</th><th>Brent $100</th><th>Brent $110</th><th>Brent $120</th></tr></thead><tbody><tr><td>0.80× base rate</td><td style="background:rgb(185,211,230);color:#0b0b0b">$18,138</td><td style="background:rgb(195,218,234);color:#0b0b0b">$16,528 ✕</td><td style="background:rgb(205,224,238);color:#0b0b0b">$14,918 ✕</td><td style="background:rgb(216,231,242);color:#0b0b0b">$13,308 ✕</td><td style="background:rgb(226,237,246);color:#0b0b0b">$11,698 ✕</td><td style="background:rgb(236,244,250);color:#0b0b0b">$10,088 ✕</td><td style="background:rgb(247,251,255);color:#0b0b0b">$8,478 ✕</td></tr><tr><td>0.90× base rate</td><td style="background:rgb(156,193,219);color:#0b0b0b">$22,628</td><td style="background:rgb(166,199,223);color:#0b0b0b">$21,018</td><td style="background:rgb(177,206,227);color:#0b0b0b">$19,408</td><td style="background:rgb(187,212,231);color:#0b0b0b">$17,798 ✕</td><td style="background:rgb(197,219,235);color:#0b0b0b">$16,188 ✕</td><td style="background:rgb(208,226,239);color:#0b0b0b">$14,578 ✕</td><td style="background:rgb(218,232,243);color:#0b0b0b">$12,968 ✕</td></tr><tr><td>1.00× base rate</td><td style="background:rgb(127,174,207);color:#0b0b0b">$27,118</td><td style="background:rgb(138,181,212);color:#0b0b0b">$25,508</td><td style="background:rgb(148,188,216);color:#0b0b0b">$23,898</td><td style="background:rgb(158,194,220);color:#0b0b0b">$22,288</td><td style="background:rgb(169,201,224);color:#0b0b0b">$20,678</td><td style="background:rgb(179,207,228);color:#0b0b0b">$19,068</td><td style="background:rgb(189,214,232);color:#0b0b0b">$17,458 ✕</td></tr><tr><td>1.10× base rate</td><td style="background:rgb(99,156,196);color:#ffffff">$31,608</td><td style="background:rgb(109,163,200);color:#ffffff">$29,998</td><td style="background:rgb(119,169,204);color:#ffffff">$28,388</td><td style="background:rgb(130,176,208);color:#0b0b0b">$26,778</td><td style="background:rgb(140,182,212);color:#0b0b0b">$25,168</td><td style="background:rgb(150,189,216);color:#0b0b0b">$23,558</td><td style="background:rgb(161,196,221);color:#0b0b0b">$21,948</td></tr><tr><td>1.20× base rate</td><td style="background:rgb(70,138,185);color:#ffffff">$36,097</td><td style="background:rgb(80,144,189);color:#ffffff">$34,487</td><td style="background:rgb(91,151,193);color:#ffffff">$32,877</td><td style="background:rgb(101,158,197);color:#ffffff">$31,268</td><td style="background:rgb(111,164,201);color:#ffffff">$29,658</td><td style="background:rgb(122,171,205);color:#0b0b0b">$28,048</td><td style="background:rgb(132,177,209);color:#0b0b0b">$26,438</td></tr><tr><td>1.30× base rate</td><td style="background:rgb(42,120,174);color:#ffffff">$40,587</td><td style="background:rgb(52,126,178);color:#ffffff">$38,977</td><td style="background:rgb(62,133,182);color:#ffffff">$37,367</td><td style="background:rgb(72,139,186);color:#ffffff">$35,757</td><td style="background:rgb(83,146,190);color:#ffffff">$34,147</td><td style="background:rgb(93,152,194);color:#ffffff">$32,537</td><td style="background:rgb(103,159,198);color:#ffffff">$30,927</td></tr></tbody></table><p class="note">✕ marks scenarios where TCE falls below the daily vessel-cost benchmark.</p>
+</div>
+
+<div class="card"><h4>TCE versus service speed at three bunker prices</h4>
+  <p class="note">Consumption scales with the cube of speed; days scale inversely. The optimum moves.</p>
+  <div class="chart"><canvas id="speed"></canvas></div></div>
+
+<h2>Assumptions — state them, so they can be argued with</h2>
+<p>A voyage estimate is only as good as its inputs, and the honest thing to do is put them where a
+commercial analyst can disagree with them. Every value below is a labelled input cell in the workbook.</p>
+<table class="assume"><thead><tr><th>Input</th><th>Value</th><th>Basis</th></tr></thead>
+<tbody><tr><td>Vessel</td><td>38,000 dwt IMO II stainless parcel tanker, 36,000 t usable cargo, 23,500 GT, 600 ft LOA</td><td>Generic deep-sea parcel tanker, not a specific ship. GT and LOA drive the port tariffs below</td></tr><tr><td>Service speed / consumption</td><td>13.5 kn; 27 t/day laden, 24 t/day ballast, 6 t/day in port</td><td>Non-eco design of this class; port figure covers pumping, heating and hotel load</td></tr><tr><td>Bunker prices</td><td>VLSFO = Brent × 7.7 ($631/t); MGO = Brent × 9.7 ($795/t)</td><td>Estimate: ~7.3 bbl/t plus a product premium. Spot-check against Ship &amp; Bunker</td></tr><tr><td>Brent base case</td><td>$82.01/bbl (trailing 12-month average)</td><td>FRED MCOILBRENTEU — data</td></tr><tr><td>Freight rates (USG–ARA)</td><td>$52/t fronthaul, $38/t backhaul</td><td>ASSUMPTION, calibrated to a plausible TCE. No public chemical rate series exists</td></tr><tr><td>Utilization</td><td>85% fronthaul, 50% backhaul</td><td>Assumption; the key commercial lever</td></tr><tr><td>Port time</td><td>5.0 days per operation US Gulf, 3.5 ARA, 3.5 Far East, 4.0 India (incl. waiting)</td><td>Estimate. A backhaul cargo adds one operation at each end</td></tr><tr><td>Port cost, US Gulf</td><td>$813.40 harbour fee + $11.24/ft/day dockage (600&nbsp;ft, tapered) + $45k ancillaries per call</td><td>PUBLISHED: Port Houston Tariff No. 14, Subrules 095-096, eff. 1-Jan-2025. Ancillaries (pilotage, tugs, linesmen, agency, private terminal) are an estimate</td></tr><tr><td>Port cost, ARA</td><td>GT &times; &euro;0.303 + cargo t &times; &euro;0.576 (capped at GT &times; 133.3% &times; rate) + GT &times; &euro;0.065, indexed 3.5%, + $35k ancillaries</td><td>PUBLISHED: Port of Rotterdam seaport dues, Tables 1-3 and the chemical-tanker efficiency cap; 2026 indexation per the port. Ancillaries estimated</td></tr><tr><td>Port cost, Far East / India</td><td>$65k and $55k per call</td><td>ESTIMATE — no published schedule transcribed for these ranges</td></tr><tr><td>Canal tolls</td><td>Panama $213,460 laden / $186,460 ballast; Suez $376,008 / $330,256 per transit</td><td>Built up from published ACP and SCA schedules; tonnages and ancillaries estimated</td></tr><tr><td>EU ETS</td><td>€75/t CO₂, 100% phase-in, 50% of extra-EU voyage emissions</td><td>Allowance price is an estimate — check ICE EUA futures</td></tr><tr><td>Commissions</td><td>2.5% of gross freight</td><td>Market standard: 1.25% address + 1.25% brokerage</td></tr><tr><td>Daily vessel cost benchmark</td><td>$18,000/day</td><td>Estimate: OPEX ~$8.5k + capital recovery ~$9.5k. Substitute your own T/C-in hire</td></tr></tbody></table>
+
+<h2>Method</h2>
+<p>TCE = (gross freight − commissions − voyage costs) ÷ voyage days, for a round voyage: fronthaul A→B
+laden, backhaul B→A at lower utilization and a lower rate. Voyage costs are the owner's account on a
+voyage charter: bunkers (VLSFO at sea outside emission control areas, MGO inside ECAs and in port), port
+disbursements, canal tolls, EU ETS allowances, and miscellaneous cargo costs. Fuel consumption scales with
+the cube of speed; distance carries a 5% weather margin; EU ETS covers 50% of emissions on voyages into or
+out of the EU plus 100% at an EU berth, at the 2026 100% phase-in.</p>
+<p>The Excel workbook is the primary artifact: five scenario switches (route, bunker case, freight market,
+congestion, utilization), a full build-up on the P&amp;L sheet, and a row-wise calculation engine behind
+every chart, so each sensitivity case is a complete re-run of the voyage rather than a linear
+approximation. <code>analysis.py</code> implements the same engine in Python and the workbook is checked
+against it cell for cell (the model's integrity check cell on the P&amp;L sheet).</p>
+
+<h2>Limitations</h2>
+<ul>
+<li><strong>Freight rates are calibrated assumptions, not fixtures.</strong> Public chemical-tanker rate
+assessments do not exist — the Baltic and Clarksons series are subscription-only. Base rates were set so
+that the base case earns a plausible TCE for this vessel class; the BLS deep-sea freight PPI is used only
+to size the plausible <em>range</em>, not the level. Spot chemical rates are more volatile than that index,
+so the freight bar in the tornado is, if anything, understated.</li>
+<li><strong>Port costs are half published, half estimated.</strong> The US Gulf and ARA legs are built from the
+actual published schedules — Port Houston's harbour fee and LOA-based dockage taper, and Rotterdam's GT,
+cargo and sustainability components with the 133.3% chemical-tanker cap. What stays an estimate is the
+ancillary stack every port has and no port publishes: pilotage, tugs, linesmen, agency and terminal
+charges, plus the Far East and India calls entirely. Port days are estimates throughout. A ±25% band on
+port costs is in the tornado for that reason.</li>
+<li><strong>Bunker prices are derived from crude, not observed.</strong> VLSFO and MGO are modelled as
+fixed multiples of Brent. In reality the crack spread moves on its own, and a widening distillate crack
+would hit this trade harder than the model shows, because MGO covers all ECA and port consumption.</li>
+<li><strong>Congestion is a scenario band, not measured delay.</strong> Vessel-level lock and berth delay
+microdata (USACE LPMS) is not publicly downloadable; it requires a FOIA or district data request. Treating
+port time as a scenario is how commercial estimators handle it too, but it is an assumption, not a
+measurement.</li>
+<li><strong>One ship, one parcel structure.</strong> Real parcel tankers carry many grades for many
+charterers with segregation constraints and overlapping port rotations. This model treats the voyage as a
+fronthaul and a backhaul parcel, which is the right level for rate and routing decisions but understates
+both the complexity and the revenue upside of true parcel optimization.</li>
+</ul>
+
+<h2>Data sources</h2>
+<ul>
+<li><strong>Brent crude spot price, monthly</strong> — FRED series <code>MCOILBRENTEU</code> (EIA), Jan-2015
+to Aug-2026, retrieved 17-Sep-2026. <a href="https://fred.stlouisfed.org/series/MCOILBRENTEU">fred.stlouisfed.org/series/MCOILBRENTEU</a></li>
+<li><strong>PPI, deep sea freight transportation</strong> — BLS series <code>WPU30130101</code> via FRED,
+Dec-2008 to Jun-2026. <a href="https://fred.stlouisfed.org/series/WPU30130101">fred.stlouisfed.org/series/WPU30130101</a></li>
+<li><strong>Panama Canal tolls</strong> — Panama Canal Authority consolidated tariff schedule (chemical
+tanker line items). <a href="https://pancanal.com/en/tolls">pancanal.com/en/tolls</a></li>
+<li><strong>Suez Canal tolls</strong> — SCA Circular 7/2023 (effective 15-Jan-2024), petroleum-product
+tanker bands plus the chemical-tanker surcharge. <a href="https://www.suezcanal.gov.eg/English/Navigation/Tolls/Pages/TollsTable.aspx">suezcanal.gov.eg</a></li>
+<li><strong>Port Houston tariff</strong> — Port of Houston Authority Tariff No. 14, effective 1 January 2025;
+Subrule 095 (dockage) and Subrule 096 (harbor fee). <a href="https://porthouston.com/toolbox/rates/tariffs/">porthouston.com/toolbox/rates/tariffs</a></li>
+<li><strong>Port of Rotterdam seaport dues</strong> — General terms and conditions including port tariffs,
+Annex 1 Tables 1-3 and the 133.3% chemical-tanker efficiency cap; 2026 indexation 3.5%.
+<a href="https://www.portofrotterdam.com/en/port-dues-tariffs">portofrotterdam.com/en/port-dues-tariffs</a></li>
+<li><strong>Inland/berth delay</strong> — USACE LPMS microdata is restricted; modelled as scenario bands.
+<a href="https://www.cisa.gov/mts-resilience-resources/lock-performance-monitoring-system-lpms">cisa.gov</a></li>
+</ul>
+<p style="font-size:13px">Full retrieval notes, caveats and the honest account of what could not be
+obtained are in <code>data/README.md</code>.</p>
+
+<h2>Files</h2>
+<p class="dl">
+<a href="model/chemical_tanker_voyage_model.xlsx">Excel model (.xlsx)</a>
+<a href="memo.pdf">One-page memo (PDF)</a>
+<a href="analysis.py">analysis.py</a>
+<a href="data/README.md">Data sources</a>
+</p>
+
+<footer>Independent analysis using publicly available data. Not affiliated with or endorsed by any
+organization named. Freight rates, port costs and vessel particulars are analyst assumptions.
+Sean Burgess · September 2026</footer>
+</div>
+
+<script>
+const D = {"routes":{"1":{"name":"USG-ARA transatlantic","tce":23574.1784232009,"days":49.407407407407405,"gross":2275200.0,"bunkers":652340.344,"port":252304.2096,"canal":0.0,"ets":123936.40874999999,"misc":25000,"result":275405.7043166668,"be":42.769039573766825},"2":{"name":"USG-Far East via Panama","tce":21529.141293886707,"days":82.5462962962963,"gross":3751200.0,"bunkers":1167607.12375,"port":260742.0,"canal":426920.0,"ets":0.0,"misc":25000,"result":291317.5429166665,"be":82.23571165018713},"3":{"name":"ARA-India WC via Suez","tce":21396.41833684127,"days":58.157407407407405,"gross":3285000.0,"bunkers":795786.08525,"port":231562.2096,"canal":752016.0,"ets":154150.486875,"misc":25000,"result":197526.88494166685,"be":68.37935696525334},"4":{"name":"ARA-India WC via Cape","tce":16495.66920354856,"days":85.32407407407408,"gross":3285000.0,"bunkers":1283528.25875,"port":231562.2096,"canal":0.0,"ets":255306.830625,"misc":25000,"result":-128355.63230833318,"be":79.30218308390593}},"tornado":{"base":23574.1784232009,"rows":[{"lever":"Freight rate (market)","key":"freight_mult","low":0.91,"high":1.25,"unit":"x base rate","tce_low":19533.31065708396,"tce_high":34798.81110685907,"swing":15265.500449775114},{"lever":"Backhaul utilization","key":"util_bh","low":0.25,"high":0.75,"unit":"share of capacity","tce_low":16944.64586547976,"tce_high":30203.710980922042,"swing":13259.065115442281},{"lever":"Port time (congestion)","key":"port_time_mult","low":0.75,"high":1.75,"unit":"x base port days","tce_low":26505.193220053312,"tce_high":17305.37307644868,"swing":9199.820143604633},{"lever":"Fronthaul utilization","key":"util_fh","low":0.7,"high":0.95,"unit":"share of capacity","tce_low":18104.577329347827,"tce_high":27258.731895332832,"swing":9154.154565985005},{"lever":"Bunker price (Brent)","key":"brent_usd_bbl","low":67.98,"high":104.84,"unit":"$/bbl","tce_low":25832.95373354573,"tce_high":19898.637415704656,"swing":5934.316317841076},{"lever":"Port disbursements","key":"port_cost_mult","low":0.75,"high":1.25,"unit":"x base","tce_low":24850.830158433284,"tce_high":22297.526687968515,"swing":2553.303470464769},{"lever":"Service speed","key":"speed_kn","low":12.0,"high":14.5,"unit":"knots","tce_low":24473.271699639157,"tce_high":22463.30732845066,"swing":2009.9643711884964},{"lever":"EU carbon price (EUA)","key":"eua_eur","low":50.0,"high":110.0,"unit":"EUR/t","tce_low":24410.33110592204,"tce_high":22403.564667391303,"swing":2006.7664385307362}]},"elasticity":[{"lever":"Freight rate","d_tce":4489.8530734632695},{"lever":"Fronthaul utilization","d_tce":3130.4260358500724},{"lever":"Service speed","d_tce":-1596.8819937413464},{"lever":"Backhaul utilization","d_tce":1325.9065115442281},{"lever":"Bunker price","d_tce":-1320.3290320839587},{"lever":"Port time","d_tce":-1024.0365217950057},{"lever":"Port disbursements","d_tce":-510.6606940929523}],"breakeven":{"brent":[50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,125,130],"port":{"1.00x port time":[34.23475621529523,35.56782140718395,36.90088659907267,38.23395179096139,39.56701698285011,40.900082174738834,42.23314736662756,43.56621255851628,44.899277750405005,46.23234294229373,47.565408134182434,48.89847332607116,50.23153851795989,51.56460370984861,52.897668901737326,54.23073409362605,55.563799285514776],"1.50x port time":[40.8528824093626,42.268853584157306,43.68482475895201,45.10079593374671,46.516767108541416,47.93273828333612,49.34870945813083,50.76468063292553,52.18065180772024,53.596622982514944,55.012594157309636,56.42856533210434,57.84453650689905,59.26050768169375,60.67647885648846,62.092450031283164,63.50842120607787],"2.00x port time":[47.35798698452599,48.856864142226684,50.35574129992737,51.85461845762806,53.35349561532874,54.85237277302943,56.35124993073011,57.8501270884308,59.349004246131486,60.847881403832176,62.34675856153286,63.84563571923355,65.34451287693425,66.84339003463494,68.34226719233563,69.8411443500363,71.34002150773699]},"util":{"70% utilization":[41.42664881088047,43.04537082960249,44.664092848324515,46.282814867046525,47.90153688576855,49.52025890449057,51.138980923212586,52.7577029419346,54.37642496065663,55.99514697937864,57.61386899810066,59.23259101682269,60.85131303554471,62.47003505426673,64.08875707298874,65.70747909171077,67.32620111043279],"85% utilization":[34.23475621529523,35.56782140718395,36.90088659907267,38.23395179096139,39.56701698285011,40.900082174738834,42.23314736662756,43.56621255851628,44.899277750405005,46.23234294229373,47.565408134182434,48.89847332607116,50.23153851795989,51.56460370984861,52.897668901737326,54.23073409362605,55.563799285514776],"95% utilization":[30.64536563716699,31.838108177277952,33.03085071738891,34.22359325749988,35.416335797610834,36.6090783377218,37.80182087783275,38.994563417943716,40.18730595805467,41.380048498165635,42.5727910382766,43.765533578387554,44.95827611849852,46.151018658609466,47.34376119872043,48.5365037388314,49.72924627894236]},"by_route":{"USG-ARA transatlantic":[34.23475621529523,35.56782140718395,36.90088659907267,38.23395179096139,39.56701698285011,40.900082174738834,42.23314736662756,43.56621255851628,44.899277750405005,46.23234294229373,47.565408134182434,48.89847332607116,50.23153851795989,51.56460370984861,52.897668901737326,54.23073409362605,55.563799285514776],"USG-Far East via Panama":[66.9604184123792,69.34643734986872,71.73245628735825,74.11847522484777,76.50449416233731,78.89051309982683,81.27653203731636,83.66255097480588,86.0485699122954,88.43458884978493,90.82060778727445,93.20662672476399,95.59264566225352,97.97866459974304,100.36468353723257,102.75070247472209,105.13672141221161],"ARA-India WC via Suez":[57.96843572342327,59.59463398050387,61.220832237584496,62.8470304946651,64.47322875174571,66.09942700882632,67.72562526590693,69.35182352298753,70.97802178006816,72.60422003714876,74.23041829422937,75.85661655130998,77.48281480839059,79.10901306547119,80.73521132255182,82.36140957963242,83.98760783671302],"ARA-India WC via Cape":[62.510344345846605,65.13324949081056,67.75615463577454,70.3790597807385,73.00196492570247,75.62487007066645,78.24777521563041,80.87068036059438,83.49358550555836,86.11649065052231,88.73939579548627,91.36230094045025,93.98520608541422,96.60811123037819,99.23101637534216,101.85392152030613,104.4768266652701]}},"grid":{"freight_mult":[0.8,0.9,1.0,1.1,1.2,1.3],"brent":[60,70,80,90,100,110,120],"tce":[[18137.996480172416,16528.035460682164,14918.074441191908,13308.113421701652,11698.152402211397,10088.191382721143,8478.230363230887],[22627.84955363569,21017.888534145437,19407.92751465518,17797.966495164925,16188.00547567467,14578.044456184416,12968.08343669416],[27117.702627098955,25507.7416076087,23897.780588118443,22287.81956862819,20677.858549137934,19067.89752964768,17457.936510157426],[31607.55570056222,29997.59468107197,28387.633661581713,26777.672642091457,25167.711622601204,23557.750603110948,21947.78958362069],[36097.40877402549,34487.447754535235,32877.48673504498,31267.525715554726,29657.56469606447,28047.603676574217,26437.64265708396],[40587.26184748876,38977.30082799851,37367.33980850825,35757.378789017996,34147.41776952774,32537.456750037487,30927.49573054723]]},"speed":{"speeds":[10.0,10.5,11.0,11.5,12.0,12.5,13.0,13.5,14.0,14.5,15.0],"curves":{"Brent $65":[25601.30144550232,25968.265512131733,26246.9776863633,26437.316398251136,26539.16652115124,26552.418950428666,26476.97021479336,26312.722117353827,26059.581403771226,25717.459455156317,25286.272003583363],"Brent $82":[24254.99280465602,24460.63739765362,24566.036343549684,24570.781464768712,24474.48621746485,24276.78427700881,23977.328233027012,23575.788384220396,23071.851624173938,22465.22041024179,21755.611808370097],"Brent $104":[22512.711034149037,22509.589249505472,22390.700488143822,22155.26566849734,21802.54700092954,21331.845287877226,20742.497433094093,20033.874141341832,19205.377791753912,18256.440469764162,17186.522143976454]}},"brent":{"dates":["2015-01","2015-02","2015-03","2015-04","2015-05","2015-06","2015-07","2015-08","2015-09","2015-10","2015-11","2015-12","2016-01","2016-02","2016-03","2016-04","2016-05","2016-06","2016-07","2016-08","2016-09","2016-10","2016-11","2016-12","2017-01","2017-02","2017-03","2017-04","2017-05","2017-06","2017-07","2017-08","2017-09","2017-10","2017-11","2017-12","2018-01","2018-02","2018-03","2018-04","2018-05","2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07","2019-08","2019-09","2019-10","2019-11","2019-12","2020-01","2020-02","2020-03","2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08"],"values":[47.76,58.1,55.89,59.52,64.08,61.48,56.56,46.52,47.62,48.43,44.27,38.01,30.7,32.18,38.21,41.58,46.74,48.25,44.95,45.84,46.57,49.52,44.73,53.31,54.58,54.87,51.59,52.31,50.33,46.37,48.48,51.7,56.15,57.51,62.71,64.37,69.08,65.32,66.02,72.11,76.98,74.41,74.25,72.53,78.89,81.03,64.75,57.36,59.41,63.96,66.14,71.23,71.32,64.22,63.92,59.04,62.83,59.71,63.21,67.31,63.65,55.66,32.01,18.38,29.38,40.27,43.24,44.74,40.91,40.19,42.69,49.99,54.77,62.28,65.41,64.81,68.53,73.16,75.17,70.75,74.49,83.54,81.05,74.17,86.51,97.13,117.25,104.58,113.34,122.71,111.93,100.45,89.76,93.33,91.42,80.92,82.5,82.59,78.43,84.64,75.47,74.84,80.11,86.15,93.72,90.6,82.94,77.63,80.12,83.48,85.41,89.94,81.75,82.25,85.15,80.36,74.02,75.63,74.35,73.86,79.27,75.44,72.73,68.13,64.45,71.44,71.04,67.87,67.99,64.54,63.8,62.54,66.6,70.89,103.13,117.29,107.14,85.4,83.76,91.08]},"ppi":{"dates":["2008-12","2009-01","2009-02","2009-03","2009-04","2009-05","2009-06","2009-07","2009-08","2009-09","2009-10","2009-11","2009-12","2010-01","2010-02","2010-03","2010-04","2010-05","2010-06","2010-07","2010-08","2010-09","2010-10","2010-11","2010-12","2011-01","2011-02","2011-03","2011-04","2011-05","2011-06","2011-07","2011-08","2011-09","2011-10","2011-11","2011-12","2012-01","2012-02","2012-03","2012-04","2012-05","2012-06","2012-07","2012-08","2012-09","2012-10","2012-11","2012-12","2013-01","2013-02","2013-03","2013-04","2013-05","2013-06","2013-07","2013-08","2013-09","2013-10","2013-11","2013-12","2014-01","2014-02","2014-03","2014-04","2014-05","2014-06","2014-07","2014-08","2014-09","2014-10","2014-11","2014-12","2015-01","2015-02","2015-03","2015-04","2015-05","2015-06","2015-07","2015-08","2015-09","2015-10","2015-11","2015-12","2016-01","2016-02","2016-03","2016-04","2016-05","2016-06","2016-07","2016-08","2016-09","2016-10","2016-11","2016-12","2017-01","2017-02","2017-03","2017-04","2017-05","2017-06","2017-07","2017-08","2017-09","2017-10","2017-11","2017-12","2018-01","2018-02","2018-03","2018-04","2018-05","2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07","2019-08","2019-09","2019-10","2019-11","2019-12","2020-01","2020-02","2020-03","2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06"],"values":[100.0,90.8,87.2,87.4,87.8,80.8,80.9,81.4,82.2,83.5,84.4,84.8,85.7,88.0,88.8,88.8,91.7,93.9,95.9,98.5,98.5,98.6,97.9,97.9,97.9,98.3,99.4,102.0,102.7,102.7,103.7,98.9,96.0,95.7,92.7,94.5,92.3,92.4,93.6,97.1,97.7,97.7,97.3,97.2,97.5,97.2,95.9,96.1,96.6,96.6,96.3,96.5,94.4,96.0,95.4,95.9,95.9,96.3,96.2,95.4,99.5,101.6,101.3,101.2,101.7,102.0,102.3,101.4,101.4,101.3,101.0,100.8,100.8,100.4,103.2,103.5,103.9,103.8,101.6,100.0,99.5,97.5,97.5,96.2,93.6,92.6,91.1,91.9,91.4,91.7,92.3,91.4,92.9,92.9,96.1,96.3,97.5,98.3,99.6,99.1,100.1,101.2,101.1,101.9,102.0,102.1,101.5,105.1,104.5,106.1,106.3,106.3,107.4,110.6,113.4,116.0,115.9,116.1,117.4,117.7,117.4,118.5,118.2,118.9,119.3,119.6,119.3,120.9,117.3,117.6,116.8,122.2,123.6,123.7,117.2,116.4,110.5,110.6,110.9,111.2,111.3,111.0,109.5,108.3,109.4,110.3,113.4,115.5,119.2,124.4,129.8,131.1,129.01,133.64,137.49,136.17,140.89,141.41,141.49,137.34,149.06,168.57,165.62,171.37,176.76,180.36,180.34,177.95,176.98,166.91,172.19,155.4,154.47,167.37,158.65,168.28,174.4,166.64,157.54,152.65,157.35,161.89,158.03,153.51,154.38,159.71,167.46,169.39,166.7,159.61,157.76,152.78,151.87,165.06,168.59,160.21,158.09,153.92,155.94,151.26,151.34,150.62,162.08,155.16,160.0,171.55,170.21,168.47,171.04,175.85,176.98]},"p1":{"route":"USG-ARA transatlantic","days":49.407407407407405,"sea_days":32.407407407407405,"port_days":17.0,"canal_days":0.0,"vlsfo_t":761.2499999999999,"mgo_t":215.75,"vlsfo_px":631.4770000000001,"mgo_px":795.497,"gross":2275200.0,"commission":56880.0,"bunkers":652340.344,"port":252304.2096,"canal":0.0,"ets":123936.40874999999,"misc":25000,"voy_costs":1053580.96235,"net":1164739.03765,"tce":23574.1784232009,"result":275405.7043166668,"be_rate_fh":42.769039573766825,"qty_fh":30600.0,"qty_bh":18000.0,"rate_fh":52.0,"rate_bh":38.0,"co2_ets_t":1502.2594999999997},"benchmark":18000};
+const INK='#52514e', INK3='#7a7975', LINE='#e3e3df';
+Chart.defaults.font.family='-apple-system,BlinkMacSystemFont,Segoe UI,Arial,sans-serif';
+Chart.defaults.font.size=12; Chart.defaults.color=INK;
+Chart.defaults.plugins.legend.labels.boxWidth=10; Chart.defaults.plugins.legend.labels.boxHeight=10;
+Chart.defaults.plugins.legend.labels.usePointStyle=true;
+const S={b:'#2a78d6',o:'#eb6834',g:'#1baf7a',y:'#eda100',r:'#e34948',v:'#4a3aa7'};
+const usd=v=>'$'+Math.round(v).toLocaleString();
+const gridX={grid:{color:LINE,drawTicks:false},border:{display:false}};
+const gridY={grid:{display:false},border:{display:false}};
+const names=Object.values(D.routes).map(r=>r.name.replace(' via',String.fromCharCode(10)+'via').replace(' transatlantic',String.fromCharCode(10)+'transatlantic'));
+
+new Chart(document.getElementById('costs'),{type:'bar',data:{labels:names,datasets:[
+ {label:'Bunkers',data:Object.values(D.routes).map(r=>r.bunkers),backgroundColor:S.b,borderColor:'#fff',borderWidth:2},
+ {label:'Port',data:Object.values(D.routes).map(r=>r.port),backgroundColor:S.o,borderColor:'#fff',borderWidth:2},
+ {label:'Canal',data:Object.values(D.routes).map(r=>r.canal),backgroundColor:S.g,borderColor:'#fff',borderWidth:2},
+ {label:'EU ETS',data:Object.values(D.routes).map(r=>r.ets),backgroundColor:S.y,borderColor:'#fff',borderWidth:2},
+ {label:'Misc',data:Object.values(D.routes).map(r=>r.misc),backgroundColor:'#9aa3ad',borderColor:'#fff',borderWidth:2}]},
+ options:{maintainAspectRatio:false,scales:{x:{stacked:true,...gridY,ticks:{font:{size:11}}},
+ y:{stacked:true,...gridX,ticks:{callback:v=>'$'+(v/1000)+'k'}}},
+ plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+usd(c.parsed.y)}}}}});
+
+new Chart(document.getElementById('tce'),{type:'bar',data:{labels:names,datasets:[
+ {label:'TCE $/day',data:Object.values(D.routes).map(r=>r.tce),
+  backgroundColor:Object.values(D.routes).map(r=>r.tce>=D.benchmark?S.g:S.r),borderRadius:4}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false},
+  tooltip:{callbacks:{label:c=>usd(c.parsed.y)+'/day'}},
+  annotation:false},
+  scales:{x:{...gridY,ticks:{font:{size:11}}},y:{...gridX,ticks:{callback:v=>'$'+(v/1000)+'k'}}}}});
+
+const tl=D.tornado.rows.map(r=>r.lever), base=D.tornado.base;
+new Chart(document.getElementById('tornado'),{type:'bar',data:{labels:tl,datasets:[
+ {label:'Low case',data:D.tornado.rows.map(r=>r.tce_low-base),backgroundColor:S.o,borderRadius:4},
+ {label:'High case',data:D.tornado.rows.map(r=>r.tce_high-base),backgroundColor:S.b,borderRadius:4}]},
+ options:{indexAxis:'y',maintainAspectRatio:false,
+  plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+usd(base+c.parsed.x)+'/day ('+(c.parsed.x>=0?'+':'')+usd(c.parsed.x)+')'}}},
+  scales:{x:{...gridX,title:{display:true,text:'change in TCE vs base ('+usd(base)+'/day)',color:INK3},
+   ticks:{callback:v=>(v>0?'+':'')+'$'+(v/1000)+'k'}},y:{...gridY}}}});
+
+new Chart(document.getElementById('elas'),{type:'bar',data:{labels:D.elasticity.map(e=>e.lever),datasets:[
+ {label:'TCE change for +10%',data:D.elasticity.map(e=>e.d_tce),
+  backgroundColor:D.elasticity.map(e=>e.d_tce>=0?S.b:S.o),borderRadius:4}]},
+ options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},
+  tooltip:{callbacks:{label:c=>(c.parsed.x>=0?'+':'')+usd(c.parsed.x)+'/day'}}},
+  scales:{x:{...gridX,ticks:{callback:v=>(v>0?'+':'')+'$'+(v/1000)+'k'}},y:{...gridY}}}});
+
+function beChart(id,obj){const ks=Object.keys(obj);const cols=[S.b,S.o,S.g];
+ new Chart(document.getElementById(id),{type:'line',data:{labels:D.breakeven.brent,
+  datasets:ks.map((k,i)=>({label:k,data:obj[k],borderColor:cols[i],backgroundColor:cols[i],
+   borderWidth:2,pointRadius:0,pointHoverRadius:5,tension:0}))},
+  options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+   plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': $'+c.parsed.y.toFixed(2)+'/t'}}},
+   scales:{x:{...gridY,title:{display:true,text:'Brent $/bbl',color:INK3}},
+    y:{...gridX,title:{display:true,text:'break-even fronthaul rate $/t',color:INK3},
+     ticks:{callback:v=>'$'+v}}}}});}
+beChart('bePort',D.breakeven.port); beChart('beUtil',D.breakeven.util);
+
+new Chart(document.getElementById('speed'),{type:'line',data:{labels:D.speed.speeds,
+ datasets:Object.keys(D.speed.curves).map((k,i)=>({label:k,data:D.speed.curves[k],
+  borderColor:[S.g,S.b,S.o][i],backgroundColor:[S.g,S.b,S.o][i],borderWidth:2,pointRadius:3,tension:.25}))},
+ options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+  plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+usd(c.parsed.y)+'/day'}}},
+  scales:{x:{...gridY,title:{display:true,text:'service speed (knots)',color:INK3}},
+   y:{...gridX,ticks:{callback:v=>'$'+(v/1000)+'k'}}}}});
+</script>
+</body></html>

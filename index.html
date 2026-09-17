@@ -95,17 +95,25 @@ description: "Quantitative analyst completing a Master of Maritime Business Admi
   <div class="container">
     <div class="section-header">
       <p class="eyebrow">Projects</p>
-      <h2>Case studies — in development.</h2>
+      <h2>Case studies.</h2>
     </div>
-    <div class="project-placeholder">
-      <p style="margin-bottom: var(--space-4);">
-        I'm building a new set of case studies focused on port operations, maritime trade,
-        and transportation analytics as part of my graduate coursework and independent work.
-        Nothing performative — each one will center on a real business decision, methodology,
-        and findings.
-      </p>
-      <a href="{{ '/projects/' | relative_url }}" class="btn btn--ghost">See the projects page</a>
+    <div class="grid grid--2">
+      {% assign featured = site.projects | sort: "date" | reverse %}
+      {% for project in featured limit: 2 %}
+        <a href="{{ project.url | relative_url }}" class="project-card card">
+          <div class="project-card__media">
+            {% if project.image %}<img src="{{ project.image | relative_url }}" alt="{{ project.title }} — preview">{% endif %}
+          </div>
+          <p class="project-card__domain">{{ project.domain }}</p>
+          <h3>{{ project.title }}</h3>
+          <p class="project-card__takeaway">{{ project.summary }}</p>
+          <span class="project-card__link">Read case study <svg><use href="#icon-arrow"></use></svg></span>
+        </a>
+      {% endfor %}
     </div>
+    <ul class="actions">
+      <li><a href="{{ '/projects/' | relative_url }}" class="btn btn--ghost">All projects</a></li>
+    </ul>
   </div>
 </section>
 

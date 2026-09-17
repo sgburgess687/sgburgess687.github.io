@@ -3,9 +3,9 @@ layout: page
 title: Projects
 eyebrow: Projects
 lede: >-
-  Case studies in port operations, maritime trade, and transportation analytics —
-  currently in development.
-description: "Case studies in port operations, maritime trade, and transportation analytics, currently in development."
+  Independent case studies in maritime commercial analytics, port operations, and transportation —
+  each one a real decision, a stated methodology, and a defensible conclusion.
+description: "Independent case studies in maritime commercial analytics, port operations, and transportation."
 permalink: /projects/
 ---
 
