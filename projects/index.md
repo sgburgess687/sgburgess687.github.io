@@ -8,7 +8,7 @@ description: "Independent case studies in maritime commercial analytics, port op
 permalink: /projects/
 ---
 
-<div class="section">
+<div class="section" style="padding-top: var(--space-4);">
   <div class="container container--narrow">
     {% assign projects = site.projects | sort: "date" | reverse %}
     {% if projects.size > 0 %}

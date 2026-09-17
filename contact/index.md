@@ -2,12 +2,12 @@
 layout: page
 title: Contact
 eyebrow: Contact
-lede: The fastest ways to reach me.
+lede: "Reach me through email or LinkedIn:"
 description: "Get in touch with Sean Burgess — email or LinkedIn."
 permalink: /contact/
 ---
 
-<div class="section section--tight">
+<div class="section section--tight" style="padding-top: var(--space-4);">
   <div class="container container--narrow">
     <div class="grid grid--2">
       <a href="mailto:{{ site.author.email }}" class="card" style="text-decoration: none; color: inherit;">
