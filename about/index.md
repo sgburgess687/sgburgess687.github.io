@@ -57,8 +57,8 @@ permalink: /about/
           Administration &amp; Logistics at Texas A&amp;M University at Galveston, expected
           December 2026. Coursework covers port operations and economics, maritime financial
           management, maritime business analytics and decision making, and logistics and supply
-          chain management. I'm also an incoming participant in Stolt-Nielsen's mentorship
-          program, starting September 2026.
+          chain management. I'm also a participant in Stolt-Nielsen's mentorship program,
+          underway since September 2026.
         </p>
       </div>
     </div>

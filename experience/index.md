@@ -137,17 +137,17 @@ permalink: /experience/
 
       <li class="timeline-item">
         <div class="timeline-item__meta">
-          <span>2026</span>
+          <span>Aug 2026</span>
           <span>&middot;</span>
           <span>Online</span>
         </div>
         <h3>Texas A&amp;M Mays Business School</h3>
-        <span class="timeline-item__role">AI Professional Development — Business Storytelling Using AI &amp; Business Applications of Deep Learning</span>
+        <span class="timeline-item__role">AI for Business — Automating Business Storytelling Using AI &amp; Business Applications of Deep Learning</span>
       </li>
 
       <li class="timeline-item">
         <div class="timeline-item__meta">
-          <span>Incoming — September 2026</span>
+          <span>Since September 2026</span>
         </div>
         <h3>Stolt-Nielsen</h3>
         <span class="timeline-item__role">Mentorship Program Participant</span>
