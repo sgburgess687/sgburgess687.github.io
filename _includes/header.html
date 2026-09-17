@@ -13,7 +13,7 @@
       <a href="{{ '/experience/' | relative_url }}" {% if page.url contains '/experience/' %}aria-current="page"{% endif %}>Experience</a>
       <a href="{{ '/projects/' | relative_url }}" {% if page.url contains '/projects/' %}aria-current="page"{% endif %}>Projects</a>
       <a href="{{ '/contact/' | relative_url }}" {% if page.url contains '/contact/' %}aria-current="page"{% endif %}>Contact</a>
-      <a href="{{ site.resume_file | relative_url }}" class="site-nav__resume" target="_blank" rel="noopener">
+      <a href="{{ site.resume_file | relative_url }}?v={{ site.time | date: '%s' }}" class="site-nav__resume" target="_blank" rel="noopener">
         Resume <svg><use href="#icon-doc"></use></svg>
       </a>
     </nav>
