@@ -3,8 +3,9 @@ layout: page
 title: Experience
 eyebrow: Experience
 lede: >-
-  Consulting placements in transportation and energy analytics, direct marine business
-  intelligence work, and the graduate training connecting them to a maritime career.
+  Experience across transportation and energy analytics, including marine business
+  intelligence at Phillips 66, followed by graduate study focused on maritime business
+  and logistics.
 description: "Professional experience across United Airlines Corporate Analytics, Phillips 66 Marine Business Intelligence, and Smartbridge/Rockcliff Energy data engineering."
 permalink: /experience/
 ---
@@ -23,7 +24,7 @@ permalink: /experience/
         <span class="timeline-item__role">Data &amp; Analytics Consultant, via Insight Global</span>
         <ul>
           <li>Led the migration of a legacy SQL Server database to Amazon Redshift, executing transformation and validation routines that preserved data integrity and improved reporting performance.</li>
-          <li>Expanded the ancillary revenue data model with commercial stakeholders, adding seat coupon, upsell conversion, and loyalty service metrics that gave the business visibility into previously unreported revenue streams.</li>
+          <li>Expanded the ancillary revenue data model with commercial stakeholders, adding seat coupon, upsell conversion, and loyalty service metrics that helped commercial teams track revenue that wasn't previously captured in the model.</li>
         </ul>
         <ul class="tag-list">
           <li class="tag">SQL Server</li>
@@ -43,7 +44,7 @@ permalink: /experience/
         <span class="timeline-item__role">Data &amp; Analytics Consultant, via Slalom Consulting <span style="color: var(--color-text-muted); font-weight: 400;">(engagement Mar 2022 – Sep 2023)</span></span>
         <ul>
           <li>Defined passenger check-in and service-exception metrics from raw XML kiosk logs — including bag-drop shortcut usage, agent overrides, and special service requests — expanding the check-in data model so operations teams could measure self-service performance at airport terminals.</li>
-          <li>Structured Apache Airflow metadata in AWS RDS using SQL to monitor business-critical pipelines, giving early visibility into failures affecting operational reporting.</li>
+          <li>Structured Apache Airflow metadata in AWS RDS using SQL to monitor business-critical pipelines, making it easier to identify pipeline failures before they affected operational reporting.</li>
         </ul>
         <ul class="tag-list">
           <li class="tag">Apache Airflow</li>
@@ -63,9 +64,9 @@ permalink: /experience/
         <h3>Phillips 66 — Marine Business Intelligence</h3>
         <span class="timeline-item__role">Marine Business Intelligence</span>
         <ul>
-          <li>Replaced a manual, twice-daily spreadsheet distribution process with a live Power BI accounting summary dashboard, giving Marine business and accounting users continuous visibility into financial position.</li>
+          <li>Replaced a manual, twice-daily spreadsheet distribution process with a live Power BI accounting summary dashboard, giving Marine business and accounting users a live view of their financial position.</li>
           <li>Converted six Marine Business reports from SAP Crystal Reports to Tableau, rebuilding report logic and validating output against the legacy system.</li>
-          <li>Trained Marine end users on the new Tableau environment, driving adoption and self-service access to marine data.</li>
+          <li>Trained Marine end users on the new Tableau environment to support adoption and self-service access to marine data.</li>
         </ul>
         <ul class="tag-list">
           <li class="tag">Power BI</li>
@@ -104,7 +105,7 @@ permalink: /experience/
   <div class="container">
     <div class="section-header">
       <p class="eyebrow">Education &amp; Professional Development</p>
-      <h2>Graduate training built for the maritime industry.</h2>
+      <h2>Maritime Graduate Study</h2>
     </div>
 
     <ol class="timeline">
