@@ -89,7 +89,12 @@
   border-bottom-color: var(--chart-blue-400);
 }
 
-.site-nav .btn { color: var(--white); }
+.site-nav__resume {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.site-nav__resume svg { width: 1em; height: 1em; flex-shrink: 0; }
 
 // Mobile nav drawer
 .site-header.is-open .site-nav {
