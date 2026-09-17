@@ -3,8 +3,7 @@ layout: page
 title: Projects
 eyebrow: Projects
 lede: >-
-  Independent case studies in maritime commercial analytics, port operations, and transportation —
-  each one a real decision, a stated methodology, and a defensible conclusion.
+  Independent case studies in maritime commercial analytics, port operations, and transportation.
 description: "Independent case studies in maritime commercial analytics, port operations, and transportation."
 permalink: /projects/
 ---
