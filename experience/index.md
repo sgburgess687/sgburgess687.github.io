@@ -9,7 +9,7 @@ description: "Professional experience across United Airlines Corporate Analytics
 permalink: /experience/
 ---
 
-<div class="section">
+<div class="section" style="padding-top: var(--space-4);">
   <div class="container container--narrow">
     <ol class="timeline">
 

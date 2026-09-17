@@ -9,7 +9,7 @@ description: "The path from mathematics and corporate analytics to marine busine
 permalink: /about/
 ---
 
-<div class="section section--tight">
+<div class="section section--tight" style="padding-top: var(--space-4);">
   <div class="container">
     <div class="two-col">
       <div>
