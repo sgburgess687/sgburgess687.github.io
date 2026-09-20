@@ -215,6 +215,12 @@ permalink: /experience/
 
     <h4 style="margin-bottom: var(--space-3);">Certifications</h4>
     <p style="color: var(--color-text-muted); margin-bottom: var(--space-3);">
+      <strong style="color: var(--color-text);">Texas A&amp;M Mays Business School, AI for Business:</strong>
+      <a href="https://maysonline.badges.parchment.com/public/credentials/oa1oZMhhTWy8_dGnNoKUUQ" target="_blank" rel="noopener">Automating Business Storytelling Using AI</a>
+      &middot;
+      <a href="https://maysonline.badges.parchment.com/public/credentials/68f3X7sARuas7wKhvJEtsA" target="_blank" rel="noopener">Business Applications of Deep Learning: Image, Audio, and Video Data</a>
+    </p>
+    <p style="color: var(--color-text-muted); margin-bottom: var(--space-3);">
       <strong style="color: var(--color-text);">Current:</strong> PCEP — Python Institute Certified Entry-Level Programmer
     </p>
     <p style="color: var(--color-text-muted); font-size: var(--fs-300);">
